@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  accounts:
+    image: fjtechsolutions/accounts
+    ports:
+      - "8089:8091"
+    networks:
+      - mysql-server
+
+    environment:
+      SPRING_APPLICATION_JSON: '{
+              "spring.datasource.url"  : "jdbc:mysql://docker-mysql:3306/bank?autoReconnect=true&useSSL=false",
+              "spring.datasource.username" : "root",
+              "spring.datasource.password" : "1623",
+              "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+              "spring.jpa.hibernate.ddl-auto" : "update"
+            }'
+
+      #SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql:3306/bank?autoReconnect=true&useSSL=false
+      #spring.datasource.username:  root
+      #spring.datasource.password:  1623
+      #spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      #spring.jpa.hibernate.ddl-auto: "update"
+    depends_on:
+      - docker-mysql
+    volumes:
+       - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+
+
+networks:
+  mysql-server:
+
+volumes:
+  db:
